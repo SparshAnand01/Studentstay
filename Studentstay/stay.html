@@ -1,0 +1,1375 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudentStay — Find a Place That Fits You</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    background: #f7f8fc;
+    color: #182033;
+    overflow-x: hidden;
+}
+
+button, input, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+nav {
+    min-height: 72px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 16px 7%;
+    border-bottom: 1px solid #e8eaf0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #4f46e5;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: #111827;
+}
+
+.navlinks {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.navlinks a {
+    text-decoration: none;
+    color: #5b6475;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.navlinks a:hover {
+    color: #4f46e5;
+}
+
+.login {
+    border: 1px solid #d9dce5;
+    background: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.login:hover {
+    background: #f0f1ff;
+}
+
+.hero {
+    padding: 72px 7% 52px;
+    background: linear-gradient(135deg, #eef0ff, #fff);
+}
+
+.hero h1 {
+    font-size: clamp(32px, 5vw, 54px);
+    max-width: 720px;
+    line-height: 1.08;
+    margin-bottom: 18px;
+}
+
+.hero h1 span {
+    color: #4f46e5;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #667085;
+    max-width: 650px;
+    line-height: 1.6;
+}
+
+.searchbox {
+    background: white;
+    margin-top: 34px;
+    padding: 18px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px #2222;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.searchbox input,
+.searchbox select {
+    border: 1px solid #dddfea;
+    padding: 14px;
+    border-radius: 10px;
+    min-width: 0;
+    flex: 1 1 190px;
+    color: #4b5563;
+    background: white;
+}
+
+.primary {
+    background: #4f46e5;
+    color: white;
+    border: 0;
+    border-radius: 10px;
+    padding: 14px 25px;
+    font-weight: 800;
+}
+
+.primary:hover {
+    background: #3730a3;
+}
+
+section {
+    padding: 55px 7%;
+}
+
+.sectionhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.sectionhead h2 {
+    font-size: clamp(24px, 3.5vw, 30px);
+}
+
+.muted {
+    color: #727b8e;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.filter {
+    background: white;
+    border: 1px solid #e0e3eb;
+    padding: 9px 15px;
+    border-radius: 20px;
+    color: #596174;
+}
+
+.filter:hover {
+    background: #eef0ff;
+    color: #4f46e5;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.card {
+    min-width: 0;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid #e8eaf0;
+    box-shadow: 0 5px 18px #1720330b;
+}
+
+.photo {
+    height: 190px;
+    background: linear-gradient(135deg, #d9ddff, #b9c3e9);
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #111827;
+    color: white;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.heart {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    background: white;
+    border: 0;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+}
+
+.cardbody {
+    padding: 18px;
+}
+
+.cardbody h3 {
+    font-size: 20px;
+    margin-bottom: 7px;
+}
+
+.location {
+    color: #727b8e;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.tag {
+    font-size: 12px;
+    background: #f0f1f7;
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+
+.cardfooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.price {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.price small {
+    font-size: 13px;
+    color: #777;
+    font-weight: 500;
+}
+
+.view {
+    background: #eef0ff;
+    color: #4f46e5;
+    border: 0;
+    padding: 9px 13px;
+    border-radius: 8px;
+    font-weight: 800;
+}
+
+.view:hover {
+    background: #dfe3ff;
+}
+
+.features {
+    background: white;
+}
+
+.featuregrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.feature {
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid #e8eaf0;
+    border-radius: 16px;
+}
+
+.icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+.feature h3 {
+    margin-bottom: 7px;
+}
+
+.feature p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.roommate {
+    background: #111827;
+    color: white;
+    border-radius: 24px;
+    padding: 45px;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.roommate > div {
+    flex: 1 1 280px;
+}
+
+.roommate h2 {
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.2;
+}
+
+.roommate p {
+    color: #c5cad5;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-top: 10px;
+}
+
+footer {
+    background: white;
+    border-top: 1px solid #e7e9ef;
+    padding: 30px 7%;
+    color: #737b8d;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* General demo modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0008;
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.modalbox {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    width: min(450px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modalbox h2 {
+    margin-bottom: 10px;
+}
+
+.close {
+    float: right;
+    border: 0;
+    background: none;
+    font-size: 24px;
+}
+
+/* Roommate matching modal */
+
+.match-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.65);
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.match-box {
+    position: relative;
+    background: #fff;
+    color: #182033;
+    width: min(600px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.match-close {
+    position: absolute;
+    right: 18px;
+    top: 12px;
+    border: 0;
+    background: transparent;
+    font-size: 30px;
+    color: #182033;
+}
+
+.match-box h2 {
+    font-size: 25px;
+    margin: 5px 35px 10px 0;
+}
+
+.match-description {
+    color: #667085;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+#roommateForm label {
+    display: block;
+    margin: 16px 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#roommateForm select {
+    width: 100%;
+    min-width: 0;
+    padding: 13px;
+    border: 1px solid #d9dce5;
+    border-radius: 10px;
+    background: white;
+    color: #182033;
+}
+
+#roommateForm select:focus {
+    outline: 2px solid #4f46e5;
+    border-color: #4f46e5;
+}
+
+.match-submit {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.match-result-card {
+    border: 1px solid #e1e4ed;
+    border-radius: 14px;
+    padding: 17px;
+    margin-top: 14px;
+    background: #fafaff;
+}
+
+.match-result-card h3 {
+    margin-bottom: 7px;
+}
+
+.match-score {
+    color: #4f46e5;
+    font-weight: 800;
+    font-size: 22px;
+    margin: 8px 0;
+}
+
+.match-result-card p {
+    color: #667085;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.match-result-card .match-reasons {
+    margin-top: 8px;
+    color: #374151;
+}
+
+/* Responsive layout */
+
+@media (max-width: 1000px) {
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .featuregrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    nav {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .navlinks {
+        gap: 14px;
+    }
+}
+
+@media (max-width: 650px) {
+    nav {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .login {
+        padding: 9px 13px;
+        margin-left: auto;
+    }
+
+    .navlinks {
+        order: 3;
+        width: 100%;
+        gap: 12px 16px;
+        padding-top: 12px;
+        border-top: 1px solid #eef0f5;
+    }
+
+    .navlinks a {
+        font-size: 13px;
+    }
+
+    .hero {
+        padding: 38px 16px 35px;
+    }
+
+    .hero h1 {
+        font-size: clamp(30px, 8vw, 42px);
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .searchbox {
+        padding: 12px;
+        margin-top: 24px;
+    }
+
+    .searchbox input,
+    .searchbox select,
+    .searchbox .primary {
+        flex: 1 1 100%;
+        width: 100%;
+        min-height: 48px;
+    }
+
+    section {
+        padding: 35px 16px;
+    }
+
+    .cards,
+    .featuregrid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .photo {
+        height: clamp(160px, 48vw, 220px);
+    }
+
+    .roommate {
+        padding: 24px;
+        border-radius: 18px;
+        gap: 20px;
+    }
+
+    .roommate .primary {
+        width: 100%;
+    }
+
+    footer {
+        padding: 24px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 500px) {
+    .match-box {
+        padding: 23px 17px;
+        max-height: 92vh;
+    }
+
+    .match-box h2 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 360px) {
+    .logo {
+        font-size: 20px;
+    }
+
+    .login {
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+
+    .navlinks {
+        gap: 10px;
+    }
+
+    .navlinks a {
+        font-size: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+
+<nav>
+    <div class="logo">Student<span>Stay</span></div>
+
+    <div class="navlinks">
+        <a href="#homes">Find a Home</a>
+        <a href="#features">How it works</a>
+        <a href="#roommate">Roommates</a>
+        <a href="#list">List Property</a>
+    </div>
+
+    <button class="login" onclick="openModal('Login')">Log in</button>
+</nav>
+
+<!-- HERO SECTION -->
+
+<header class="hero">
+    <h1>Find a place that <span>fits your student life.</span></h1>
+
+    <p>
+        Verified student rooms, PGs and hostels near your college —
+        with transparent pricing, real photos and roommate matching.
+    </p>
+
+    <div class="searchbox">
+        <input
+            id="city"
+            type="text"
+            placeholder="📍 City or college (e.g. Gurugram)"
+        >
+
+        <select id="room">
+            <option value="all">Any room type</option>
+            <option value="Single">Single</option>
+            <option value="2 Sharing">2 Sharing</option>
+            <option value="3 Sharing">3 Sharing</option>
+        </select>
+
+        <select id="budget">
+            <option value="all">Any budget</option>
+            <option value="low">Under ₹8,000</option>
+            <option value="medium">₹8,000–₹12,000</option>
+            <option value="high">₹12,000+</option>
+        </select>
+
+        <button class="primary" onclick="searchHomes()">
+            Search homes
+        </button>
+    </div>
+</header>
+
+<!-- ACCOMMODATION LISTINGS -->
+
+<section id="homes">
+    <div class="sectionhead">
+        <div>
+            <h2>Top stays near you</h2>
+            <p class="muted">Verified places students actually recommend</p>
+        </div>
+
+        <span id="resultText" class="muted">6 stays</span>
+    </div>
+
+    <div class="filters">
+        <button class="filter" onclick="filterCards('all')">All</button>
+        <button class="filter" onclick="filterCards('hostel')">Hostels</button>
+        <button class="filter" onclick="filterCards('pg')">PGs</button>
+        <button class="filter" onclick="filterCards('premium')">Premium</button>
+    </div>
+
+    <div class="cards" id="cards">
+
+        <article class="card" data-type="premium" data-price="11500" data-room="2 Sharing">
+            <div class="photo">
+                <span class="badge">✓ VERIFIED</span>
+                <button class="heart" onclick="toggleHeart(this)">♡</button>
+            </div>
+
+            <div class="cardbody">
+                <h3>Campus Heights</h3>
+                <p class="location">📍 1.2 km from Vedam School of Technology</p>
+
+                <div class="tags">
+                    <span class="tag">Wi-Fi</span>
+                    <span class="tag">AC</span>
+                    <span class="tag">Gym</span>
+                    <span class="tag">Food</span>
+                </div>
+
+                <div class="cardfooter">
+                    <div class="price">₹11,500 <small>/month</small></div>
+                    <button class="view" onclick="openModal('Campus Heights')">View</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="card" data-type="pg" data-price="8900" data-room="2 Sharing">
+            <div class="photo">
+                <span class="badge">✓ VERIFIED</span>
+                <button class="heart" onclick="toggleHeart(this)">♡</button>
+            </div>
+
+            <div class="cardbody">
+                <h3>UrbanNest PG</h3>
+                <p class="location">📍 800 m from campus</p>
+
+                <div class="tags">
+                    <span class="tag">2 Sharing</span>
+                    <span class="tag">Laundry</span>
+                    <span class="tag">Food</span>
+                </div>
+
+                <div class="cardfooter">
+                    <div class="price">₹8,900 <small>/month</small></div>
+                    <button class="view" onclick="openModal('UrbanNest PG')">View</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="card" data-type="hostel" data-price="7500" data-room="3 Sharing">
+            <div class="photo">
+                <span class="badge">✓ VERIFIED</span>
+                <button class="heart" onclick="toggleHeart(this)">♡</button>
+            </div>
+
+            <div class="cardbody">
+                <h3>StudentHub Hostel</h3>
+                <p class="location">📍 2.1 km from campus</p>
+
+                <div class="tags">
+                    <span class="tag">24/7 Security</span>
+                    <span class="tag">Mess</span>
+                    <span class="tag">Common Room</span>
+                </div>
+
+                <div class="cardfooter">
+                    <div class="price">₹7,500 <small>/month</small></div>
+                    <button class="view" onclick="openModal('StudentHub Hostel')">View</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="card" data-type="premium" data-price="13200" data-room="Single">
+            <div class="photo">
+                <span class="badge">★ TOP RATED</span>
+                <button class="heart" onclick="toggleHeart(this)">♡</button>
+            </div>
+
+            <div class="cardbody">
+                <h3>Green Valley Residence</h3>
+                <p class="location">📍 1.7 km from campus</p>
+
+                <div class="tags">
+                    <span class="tag">Single Room</span>
+                    <span class="tag">AC</span>
+                    <span class="tag">Study Desk</span>
+                </div>
+
+                <div class="cardfooter">
+                    <div class="price">₹13,200 <small>/month</small></div>
+                    <button class="view" onclick="openModal('Green Valley Residence')">View</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="card" data-type="pg" data-price="9800" data-room="2 Sharing">
+            <div class="photo">
+                <span class="badge">✓ VERIFIED</span>
+                <button class="heart" onclick="toggleHeart(this)">♡</button>
+            </div>
+
+            <div class="cardbody">
+                <h3>Scholar's Nest</h3>
+                <p class="location">📍 1.4 km from campus</p>
+
+                <div class="tags">
+                    <span class="tag">Quiet Zone</span>
+                    <span class="tag">Wi-Fi</span>
+                    <span class="tag">Laundry</span>
+                </div>
+
+                <div class="cardfooter">
+                    <div class="price">₹9,800 <small>/month</small></div>
+                    <button class="view" onclick="openModal('Scholar’s Nest')">View</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="card" data-type="hostel" data-price="6900" data-room="3 Sharing">
+            <div class="photo">
+                <span class="badge">✓ VERIFIED</span>
+                <button class="heart" onclick="toggleHeart(this)">♡</button>
+            </div>
+
+            <div class="cardbody">
+                <h3>NextGen Hostel</h3>
+                <p class="location">📍 2.8 km from campus</p>
+
+                <div class="tags">
+                    <span class="tag">Gaming Room</span>
+                    <span class="tag">Mess</span>
+                    <span class="tag">Parking</span>
+                </div>
+
+                <div class="cardfooter">
+                    <div class="price">₹6,900 <small>/month</small></div>
+                    <button class="view" onclick="openModal('NextGen Hostel')">View</button>
+                </div>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<!-- FEATURES -->
+
+<section class="features" id="features">
+    <div class="sectionhead">
+        <div>
+            <h2>More than a room</h2>
+            <p class="muted">
+                Built around the problems students face when moving to a new city.
+            </p>
+        </div>
+    </div>
+
+    <div class="featuregrid">
+        <div class="feature">
+            <div class="icon">🛡️</div>
+            <h3>Verified homes</h3>
+            <p>Every listed property can be verified with owner, photos, amenities and student reviews.</p>
+        </div>
+
+        <div class="feature">
+            <div class="icon">👥</div>
+            <h3>Roommate matching</h3>
+            <p>Match with students based on sleep schedule, cleanliness, food habits and lifestyle.</p>
+        </div>
+
+        <div class="feature">
+            <div class="icon">📍</div>
+            <h3>College distance</h3>
+            <p>Compare homes by actual travel distance and estimated commute time to campus.</p>
+        </div>
+
+        <div class="feature">
+            <div class="icon">💳</div>
+            <h3>Transparent pricing</h3>
+            <p>See rent, deposit, food and other charges before you schedule a visit.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ROOMMATE MATCHING SECTION -->
+
+<section id="roommate">
+    <div class="roommate">
+        <div>
+            <h2>Find a roommate you'll actually get along with.</h2>
+            <p>
+                Tell our AI-style assistant about your sleep schedule,
+                cleanliness, study habits and lifestyle. It will compare
+                your answers with student profiles and suggest compatible roommates.
+            </p>
+        </div>
+
+        <button class="primary" onclick="openRoommateForm()">
+            Find my roommate →
+        </button>
+    </div>
+</section>
+
+<!-- ROOMMATE MATCHING FORM -->
+
+<div class="match-modal" id="matchModal" role="dialog" aria-modal="true" aria-labelledby="matchTitle">
+    <div class="match-box">
+        <button class="match-close" type="button" onclick="closeRoommateForm()" aria-label="Close">×</button>
+
+        <h2 id="matchTitle">🤖 Roommate Match Assistant</h2>
+
+        <p class="match-description">
+            Answer these lifestyle questions to find compatible roommates.
+        </p>
+
+        <form id="roommateForm">
+
+            <label for="sleep">Sleep schedule</label>
+            <select id="sleep" required>
+                <option value="">Choose your sleep schedule</option>
+                <option value="early">Early sleeper (before 10 PM)</option>
+                <option value="normal">Usually 10 PM–12 AM</option>
+                <option value="late">Night owl (after 12 AM)</option>
+            </select>
+
+            <label for="clean">Cleanliness</label>
+            <select id="clean" required>
+                <option value="">Choose your preference</option>
+                <option value="very">Very clean and organized</option>
+                <option value="medium">Usually tidy</option>
+                <option value="relaxed">Relaxed about mess</option>
+            </select>
+
+            <label for="noise">Preferred room environment</label>
+            <select id="noise" required>
+                <option value="">Choose your preference</option>
+                <option value="quiet">Quiet</option>
+                <option value="balanced">Some noise is fine</option>
+                <option value="lively">Lively and social</option>
+            </select>
+
+            <label for="study">Study schedule</label>
+            <select id="study" required>
+                <option value="">Choose your study schedule</option>
+                <option value="morning">Morning</option>
+                <option value="evening">Evening</option>
+                <option value="night">Late night</option>
+            </select>
+
+            <label for="social">Personality / social preference</label>
+            <select id="social" required>
+                <option value="">Choose your preference</option>
+                <option value="introvert">Introvert — value personal space</option>
+                <option value="balanced">Balanced — social and private</option>
+                <option value="extrovert">Extrovert — enjoy socializing</option>
+            </select>
+
+            <label for="food">Food preference</label>
+            <select id="food" required>
+                <option value="">Choose your food preference</option>
+                <option value="veg">Vegetarian</option>
+                <option value="nonveg">Non-vegetarian</option>
+                <option value="both">Both are fine</option>
+            </select>
+
+            <label for="smoking">Smoking preference</label>
+            <select id="smoking" required>
+                <option value="">Choose your preference</option>
+                <option value="nonsmoker">Prefer a non-smoking room</option>
+                <option value="smoker">Smoking is okay</option>
+                <option value="indifferent">No strong preference</option>
+            </select>
+
+            <label for="budgetMatch">Monthly budget</label>
+            <select id="budgetMatch" required>
+                <option value="">Choose your budget</option>
+                <option value="low">Below ₹8,000</option>
+                <option value="medium">₹8,000–₹12,000</option>
+                <option value="high">Above ₹12,000</option>
+            </select>
+
+            <button class="primary match-submit" type="submit">
+                Find compatible roommates
+            </button>
+        </form>
+
+        <div id="matchResults" aria-live="polite"></div>
+    </div>
+</div>
+
+<!-- LIST PROPERTY SECTION -->
+
+<section id="list">
+    <div class="roommate" style="background:#eef0ff;color:#182033;">
+        <div>
+            <h2>Have a student property?</h2>
+            <p style="color:#667085;">
+                List your PG, hostel or student apartment and reach verified students near colleges.
+            </p>
+        </div>
+
+        <button class="primary" onclick="openModal('List Property')">
+            List your property
+        </button>
+    </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+    <strong>StudentStay</strong>
+    <span>© 2026 StudentStay · Built for students, by students.</span>
+</footer>
+
+<!-- GENERAL DEMO POPUP -->
+
+<div class="modal" id="modal">
+    <div class="modalbox">
+        <button class="close" onclick="closeModal()" aria-label="Close">×</button>
+
+        <h2 id="modalTitle"></h2>
+
+        <p style="color:#667085;line-height:1.6;margin:12px 0 20px;">
+            This is a demo interaction. In the real product, this would connect
+            to verified listings, student profiles and booking/visit scheduling.
+        </p>
+
+        <button class="primary" onclick="closeModal()">Continue</button>
+    </div>
+</div>
+
+<script>
+
+// GENERAL POPUP
+
+function openModal(title) {
+    document.getElementById("modalTitle").innerText = title;
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+// FAVOURITE BUTTON
+
+function toggleHeart(button) {
+    button.innerText = button.innerText === "♡" ? "♥" : "♡";
+}
+
+// FILTER ACCOMMODATION CARDS
+
+function filterCards(type) {
+    const cards = document.querySelectorAll(".card");
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const matches = type === "all" || card.dataset.type === type;
+
+        card.style.display = matches ? "block" : "none";
+
+        if (matches) {
+            visibleCount++;
+        }
+    });
+
+    document.getElementById("resultText").innerText =
+        visibleCount + (visibleCount === 1 ? " stay" : " stays");
+}
+
+// SEARCH HOMES
+
+function searchHomes() {
+    const city = document.getElementById("city").value.trim();
+    const room = document.getElementById("room").value;
+    const budget = document.getElementById("budget").value;
+
+    const cards = document.querySelectorAll(".card");
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const price = Number(card.dataset.price);
+        const cardRoom = card.dataset.room;
+
+        let matches = true;
+
+        if (room !== "all" && cardRoom !== room) {
+            matches = false;
+        }
+
+        if (budget === "low" && price >= 8000) {
+            matches = false;
+        }
+
+        if (budget === "medium" && (price < 8000 || price > 12000)) {
+            matches = false;
+        }
+
+        if (budget === "high" && price < 12000) {
+            matches = false;
+        }
+
+        card.style.display = matches ? "block" : "none";
+
+        if (matches) {
+            visibleCount++;
+        }
+    });
+
+    let message = city ? "Results for " + city : "Search results";
+
+    document.getElementById("resultText").innerText =
+        message + " · " + visibleCount + " stays";
+
+    document.getElementById("homes").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// OPEN AND CLOSE ROOMMATE MATCH FORM
+
+function openRoommateForm() {
+    document.getElementById("matchModal").style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+
+function closeRoommateForm() {
+    document.getElementById("matchModal").style.display = "none";
+    document.body.style.overflow = "";
+}
+
+document.getElementById("matchModal").addEventListener("click", function(event) {
+    if (event.target === this) {
+        closeRoommateForm();
+    }
+});
+
+// SAMPLE ROOMMATE PROFILES
+// These profiles are examples for the demo.
+
+const roommateProfiles = [
+    {
+        name: "Aarav",
+        course: "B.Tech Computer Science",
+        sleep: "normal",
+        clean: "very",
+        noise: "quiet",
+        study: "evening",
+        social: "balanced",
+        food: "veg",
+        smoking: "nonsmoker",
+        budgetMatch: "medium"
+    },
+    {
+        name: "Rohan",
+        course: "B.Tech Artificial Intelligence",
+        sleep: "late",
+        clean: "medium",
+        noise: "lively",
+        study: "night",
+        social: "extrovert",
+        food: "both",
+        smoking: "smoker",
+        budgetMatch: "low"
+    },
+    {
+        name: "Ishaan",
+        course: "B.Tech Information Technology",
+        sleep: "early",
+        clean: "very",
+        noise: "quiet",
+        study: "morning",
+        social: "introvert",
+        food: "veg",
+        smoking: "nonsmoker",
+        budgetMatch: "high"
+    },
+    {
+        name: "Kabir",
+        course: "B.Tech Computer Science",
+        sleep: "normal",
+        clean: "medium",
+        noise: "balanced",
+        study: "evening",
+        social: "balanced",
+        food: "nonveg",
+        smoking: "nonsmoker",
+        budgetMatch: "medium"
+    },
+    {
+        name: "Dev",
+        course: "B.Tech Data Science",
+        sleep: "late",
+        clean: "relaxed",
+        noise: "lively",
+        study: "night",
+        social: "extrovert",
+        food: "both",
+        smoking: "indifferent",
+        budgetMatch: "low"
+    }
+];
+
+// IMPORTANCE OF EACH PREFERENCE
+// The weights add up to 100.
+
+const matchWeights = {
+    sleep: 20,
+    clean: 15,
+    noise: 15,
+    study: 10,
+    social: 10,
+    food: 5,
+    smoking: 15,
+    budgetMatch: 10
+};
+
+// CALCULATE COMPATIBILITY SCORE
+
+function calculateCompatibility(student, profile) {
+    let score = 0;
+
+    for (const key in matchWeights) {
+        const weight = matchWeights[key];
+
+        const studentAnswer = student[key];
+        const profileAnswer = profile[key];
+
+        if (studentAnswer === profileAnswer) {
+            score += weight;
+        } else if (
+            key === "food" &&
+            (studentAnswer === "both" || profileAnswer === "both")
+        ) {
+            score += weight * 0.7;
+        } else if (
+            key === "smoking" &&
+            (studentAnswer === "indifferent" || profileAnswer === "indifferent")
+        ) {
+            score += weight * 0.5;
+        } else if (
+            key === "noise" &&
+            (studentAnswer === "balanced" || profileAnswer === "balanced")
+        ) {
+            score += weight * 0.5;
+        } else if (
+            key === "clean" &&
+            (studentAnswer === "medium" || profileAnswer === "medium")
+        ) {
+            score += weight * 0.5;
+        }
+    }
+
+    return Math.round(score);
+}
+
+// EXPLAIN WHY EACH ROOMMATE MATCHED
+
+function getMatchReasons(student, profile) {
+    const labels = {
+        sleep: "sleep schedule",
+        clean: "cleanliness",
+        noise: "room environment",
+        study: "study schedule",
+        social: "social preference",
+        food: "food preference",
+        smoking: "smoking preference",
+        budgetMatch: "budget"
+    };
+
+    return Object.keys(matchWeights)
+        .filter(key => student[key] === profile[key])
+        .map(key => labels[key]);
+}
+
+// PROCESS THE ROOMMATE FORM
+
+document.getElementById("roommateForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const fields = [
+        "sleep",
+        "clean",
+        "noise",
+        "study",
+        "social",
+        "food",
+        "smoking",
+        "budgetMatch"
+    ];
+
+    const student = {};
+
+    fields.forEach(key => {
+        student[key] = document.getElementById(key).value;
+    });
+
+    // Score all profiles and select the top three.
+
+    const matches = roommateProfiles
+        .map(profile => ({
+            ...profile,
+            score: calculateCompatibility(student, profile),
+            reasons: getMatchReasons(student, profile)
+        }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+
+    const results = document.getElementById("matchResults");
+
+    results.replaceChildren();
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Your Top Roommate Matches";
+    heading.style.marginTop = "28px";
+
+    results.appendChild(heading);
+
+    matches.forEach(profile => {
+        const card = document.createElement("div");
+        card.className = "match-result-card";
+
+        const name = document.createElement("h3");
+        name.textContent = profile.name;
+
+        const course = document.createElement("p");
+        course.textContent = profile.course;
+
+        const score = document.createElement("div");
+        score.className = "match-score";
+        score.textContent = profile.score + "% compatible";
+
+        const reason = document.createElement("p");
+        reason.className = "match-reasons";
+
+        reason.textContent = profile.reasons.length
+            ? "Matching preferences: " + profile.reasons.join(", ") + "."
+            : "There are some lifestyle differences to discuss before sharing a room.";
+
+        card.append(name, course, score, reason);
+        results.appendChild(card);
+    });
+
+    // Scroll to the results after matching.
+
+    results.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+});
+
+</script>
+
+</body>
+</html>
